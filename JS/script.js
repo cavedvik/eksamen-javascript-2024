@@ -61,8 +61,7 @@ const pokemonItem = (pokemonData, speciesData) => {
   const pokemonDiv = document.getElementById("pokeApi");
   const pokemonContainer = document.createElement("div");
 
-  // Finner fargen basert på Pokémon's første type
-  const typeColor = pokemonColors[pokemonData.types[0].type.name] || '#ffffff'; // Default til hvit hvis ikke funnet
+  const typeColor = pokemonColors[pokemonData.types[0].type.name] || '#ffffff'; //chat-gpt hjelp
 
   pokemonContainer.style.cssText = `
       background-color: ${typeColor};
@@ -98,7 +97,6 @@ const pokemonItem = (pokemonData, speciesData) => {
 
   pokemonDiv.appendChild(pokemonContainer);
 };
-
 
 const randomizer = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
