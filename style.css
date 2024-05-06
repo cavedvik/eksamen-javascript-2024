@@ -6,9 +6,15 @@
     color: rgb(0, 0, 0);
 }
 
+.pokeContainer {
+    display: flex;
+    flex-direction: row;
+}
+
 #pokeApi {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 40px;
+    gap: 20px;
+    width: 50%;
   }
