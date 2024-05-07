@@ -1,0 +1,4 @@
+{
+    "compilerOptions": { "checkJs": true }
+}
+//for å få rød streker under feil
