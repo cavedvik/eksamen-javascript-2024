@@ -18,6 +18,8 @@ const pokeFavorites = async () => {
     }
 }
 
+
+
 const displayFavorites = (favorites) => {
     const favoriteDiv = document.getElementById("pokeFavorite");
     if (favoriteDiv) {

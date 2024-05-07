@@ -1,11 +1,13 @@
 //Globale variabler
 export const crudUrl = "https://crudapi.co.uk/api/v1/pokemons";
-const pokeapiUrl = "https://pokeapi.co/api/v2/pokemon?limit=20";
+const pokeapiUrl = "https://pokeapi.co/api/v2/pokemon?limit=10";
 export const headers = {
   "Content-Type": "application/json",
   Authorization: "Bearer wYXuv1_mywtLzDEEy4tKMUmd_dvKp5gI3QsHBtKB7mooH5LPyA",
 };
-const pokemonColors = {
+
+//hentet farger bassert på type her: "https://gist.github.com/apaleslimghost/0d25ec801ca4fc43317bcff298af43c3"
+const pokemonColors = { 
   bug: "#A8B91A",
   dark: "#706056",
   dragon: "#6F45FC",
@@ -44,6 +46,7 @@ export const pokeFetch = async () => {
           throw new Error(`error, status = ${pokemonResponse.status}`);
         }
         const pokemonData = await pokemonResponse.json();
+        console.log(pokemonData)
 
         pokemonItem(pokemonData, document.getElementById("pokeApi"), "pokeApi");
       } catch (error) {
@@ -56,7 +59,7 @@ export const pokeFetch = async () => {
 };
 
 //lagrer favoritter i crud
-const addFavouriteCrud = async (pokemon) => {
+export const addFavouriteCrud = async (pokemon) => {
   try {
     const response = await fetch(crudUrl, {
       method: "POST",

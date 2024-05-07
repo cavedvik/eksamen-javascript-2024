@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./CSS/global.css">
+    <link rel="stylesheet" href="./CSS/style.css">
     <title>Pokemons</title>
 </head>
 <body>
@@ -16,15 +17,18 @@
     <h1>Pokedex</h1>
     <div class="pokeContainer">
         <div id="pokeApi"></div>
-        <div id="newPokemon">
+        <div id="newPokemonDiv">
             <h1>Lag din egen pokemon</h1>
-            <label for="name">Navngi din nye pokemon</label>
-            <input type="text" name="name" id="newPokemon">
-            <input type="button" id="newPokemonBtn" value="Opprett">
+            <label for="newPokemonInput">Navngi din nye pokemon:</label>
+            <input type="text" id="newPokemonInput" name="name">
+            <button id="newPokemonBtn">Opprett</button>
+            <div id="newPokemonContainer"></div>
         </div>
     </div>
+    
+    
     <dialog>
-        
+
     </dialog>
     <script type="module" src="./JS/script.js"></script>
 </body>
