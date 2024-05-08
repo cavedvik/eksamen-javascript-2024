@@ -1,13 +1,13 @@
 //Globale variabler
 export const crudUrl = "https://crudapi.co.uk/api/v1/pokemons";
-const pokeapiUrl = "https://pokeapi.co/api/v2/pokemon?limit=10";
+const pokeapiUrl = "https://pokeapi.co/api/v2/pokemon?limit=50";
 export const headers = {
   "Content-Type": "application/json",
   Authorization: "Bearer wYXuv1_mywtLzDEEy4tKMUmd_dvKp5gI3QsHBtKB7mooH5LPyA",
 };
 
 //hentet farger bassert på type her: "https://gist.github.com/apaleslimghost/0d25ec801ca4fc43317bcff298af43c3"
-const pokemonColors = { 
+export const pokemonColors = {
   bug: "#A8B91A",
   dark: "#706056",
   dragon: "#6F45FC",
@@ -31,30 +31,27 @@ const pokemonColors = {
 //fetcher pokemons
 export const pokeFetch = async () => {
   try {
-    const response = await fetch(pokeapiUrl);
-    if (!response.ok) {
-      throw new Error("Error" + response.status);
-    }
-    const data = await response.json();
-    console.log(data.results);
-    randomizer(data.results);
-
-    for (const pokemon of data.results) {
-      try {
-        const pokemonResponse = await fetch(pokemon.url);
-        if (!pokemonResponse.ok) {
-          throw new Error(`error, status = ${pokemonResponse.status}`);
-        }
-        const pokemonData = await pokemonResponse.json();
-        console.log(pokemonData)
-
-        pokemonItem(pokemonData, document.getElementById("pokeApi"), "pokeApi");
-      } catch (error) {
-        console.error("There is a problem fetching the Pokemon details", error);
-      }
-    }
+      const response = await fetch(pokeapiUrl);
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      const data = await response.json();
+      
+      // Håndter hvert fetch av detaljer parallelt
+      const detailPromises = data.results.map(pokemon => fetchPokemonDetails(pokemon.url));
+      await Promise.all(detailPromises);
   } catch (error) {
-    console.error("There is a problem fetching the data", error);
+      console.error("Problem fetching data: ", error);
+  }
+};
+
+// Funksjon for å hente detaljer for en enkelt Pokémon
+export const fetchPokemonDetails = async (url) => {
+  try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`HTTP error at ${url}! Status: ${response.status}`);
+      const pokemonData = await response.json();
+      pokemonItem(pokemonData, document.getElementById("pokeApi"));
+  } catch (error) {
+      console.error(`Problem fetching details for pokemon at ${url}: `, error);
   }
 };
 
@@ -64,7 +61,12 @@ export const addFavouriteCrud = async (pokemon) => {
     const response = await fetch(crudUrl, {
       method: "POST",
       headers,
-      body: JSON.stringify([pokemon]),
+      body: JSON.stringify([{
+        name: pokemon.name,
+        sprites: pokemon.sprites,
+        types: pokemon.types,
+        id: pokemon.id,
+    }]),
     });
     if (!response.ok) {
       throw new Error("Network response was not ok");
@@ -92,30 +94,24 @@ export const deleteFavoriteCrud = async (pokemon) => {
   }
 };
 
-//lager pokemon kortet
-export const pokemonItem = (data, parentElement, id) => {
-  const pokemonDiv = document.getElementById(id);
+export const pokemonItem = (data, pokemonDiv) => {
   const pokemonContainer = document.createElement("div");
-  const typeColor =
-    data.types &&
-    data.types.length > 0 &&
-    data.types[0].type &&
-    data.types[0].type.name //chat-gpt hjelp
-      ? pokemonColors[data.types[0].type.name] || "#ffffff"
-      : "#ffffff";
-
   pokemonContainer.style.cssText = `
-      background-color: ${typeColor};
-      border-radius: 10px;
-      width: 200px;
-      padding: 10px;
-      margin: 10px;
-      `;
+        background-color: white;
+        border-radius: 10px;
+        width: 200px;
+        padding: 10px;
+        margin: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);`;
 
-  if (data.sprites?.front_default) {
+  const pokemonId = document.createElement("p");
+  pokemonId.textContent = `#000${data.id}`;
+  pokemonContainer.appendChild(pokemonId);
+
+  if (data.sprites?.other["official-artwork"].front_default) {
     const imageElement = document.createElement("img");
     imageElement.style.cssText = `width: 100px; height: 100px;`;
-    imageElement.src = data.sprites.other["official-artwork"].front_shiny;
+    imageElement.src = data.sprites.other["official-artwork"].front_default;
     pokemonContainer.appendChild(imageElement);
   }
 
@@ -124,14 +120,17 @@ export const pokemonItem = (data, parentElement, id) => {
   pokemonContainer.appendChild(nameElement);
 
   const typesElement = document.createElement("p");
-  typesElement.textContent = `${data.types.map((t) => t.type.name).join(", ")}`;
+  data.types.forEach(type => {
+    const typeSpan = document.createElement("span");
+    const color = pokemonColors[type.type.name] || "#ffffff";
+    typeSpan.textContent = `${type.type.name} `;
+    typeSpan.style.cssText = `background-color: ${color}; color: #000000; padding: 0 15px; border-radius: 2px; margin-right: 5px;`;
+    typesElement.appendChild(typeSpan);
+  });
+
   pokemonContainer.appendChild(typesElement);
 
-  const infoBtn = document.createElement("button");
-  infoBtn.innerText = "Info";
-  pokemonContainer.appendChild(infoBtn);
-
-  //endrer sletteknapp/legg til favoritter ut i fra hvem siden man er på
+  // Sjekk om _uuid er tilgjengelig og bestem knappen basert på det
   if (data._uuid) {
     const deleteBtn = document.createElement("button");
     deleteBtn.innerText = "Delete";
@@ -143,7 +142,6 @@ export const pokemonItem = (data, parentElement, id) => {
   } else {
     const addToFavorite = document.createElement("button");
     addToFavorite.innerText = "Add to Favorite";
-    addToFavorite.id = "addToFavorite";
     addToFavorite.addEventListener("click", async () => {
       try {
         const addedPokemon = await addFavouriteCrud(data);
@@ -158,10 +156,3 @@ export const pokemonItem = (data, parentElement, id) => {
   pokemonDiv.appendChild(pokemonContainer);
 };
 
-const randomizer = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-};
