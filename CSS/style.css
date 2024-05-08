@@ -1,6 +1,8 @@
 .pokeContainer {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
 }
 
 #pokeApi {
@@ -9,5 +11,7 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
-    width: 50%;
+  
   }
+
+

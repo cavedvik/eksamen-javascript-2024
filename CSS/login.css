@@ -1,0 +1,32 @@
+.container {
+    width: 100%;
+    height: 100vh;
+    background-image: linear-gradient(rgba(0, 0, 50, 0.8), rgba(0, 0, 50, 0.8)), url(https://lh3.googleusercontent.com/05JfZ1ZdyzrRNvhJosUFdcjjJRFE7k2KhmeM2ujqeCbrcrCb1hkq7O_JdUBpQ3r9hi0YeSn4WgmKx3Ai8LHdM2SucxSzl9TRZ4fCAqETJ6WtHgE=w1440-e365);
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+}
+
+.form {
+    background-image: linear-gradient(to bottom right, #ffffff, #42a5ff);
+    padding: 40px; 
+    border-radius: 10px;
+    width: 300px; 
+    text-align: center;
+}
+
+#loginBtn, #registerBtn {
+    color: black;
+    padding: 5px 10px;
+}
+
+#username, #password {
+    color: black;
+}
+
+#formTitle {
+    padding-bottom: 40px;
+}
