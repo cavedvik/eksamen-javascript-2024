@@ -3,7 +3,7 @@ import { pokemonItem, headers, crudUrl } from "./helpers.js";
 
 const pokeFavorites = async () => {
     try {
-        const response = await fetch(crudUrl, {
+        const response = await fetch(`${crudUrl}/pokemons`, {
             method: "GET",
             headers: headers
         });

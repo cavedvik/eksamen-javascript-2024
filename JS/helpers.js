@@ -1,6 +1,6 @@
 //Globale variabler
-export const crudUrl = "https://crudapi.co.uk/api/v1/pokemons";
-const pokeapiUrl = "https://pokeapi.co/api/v2/pokemon?limit=50";
+export const crudUrl = "https://crudapi.co.uk/api/v1";
+export const pokeapiUrl = "https://pokeapi.co/api/v2/pokemon?limit=50";
 export const headers = {
   "Content-Type": "application/json",
   Authorization: "Bearer wYXuv1_mywtLzDEEy4tKMUmd_dvKp5gI3QsHBtKB7mooH5LPyA",
@@ -58,7 +58,7 @@ export const fetchPokemonDetails = async (url) => {
 //lagrer favoritter i crud
 export const addFavouriteCrud = async (pokemon) => {
   try {
-    const response = await fetch(crudUrl, {
+    const response = await fetch(`${crudUrl}/pokemons`, {
       method: "POST",
       headers,
       body: JSON.stringify([{
