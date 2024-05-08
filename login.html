@@ -5,20 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./CSS/global.css">
     <link rel="stylesheet" href="./CSS/login.css">
-    <title>Loginn/Registrer</title>
+    <title>Login/Registrer</title>
 </head>
 <body>
+    <header>
+        <h1>Pokedex</h1>
+        <nav>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="favorite.html">Favorites</a></li>
+            <li><a href="login.html">Log in</a></li>
+        </nav>
+    </header>
     <div class="container">
         <form id="userForm" class="form">
             <h2 id="formTitle">Login</h2>
+            <div id="errorMessage" style="color: red; display: none;"></div> 
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required /><br /><br />
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required /><br /><br />
     
-            <input type="button" value="Login" id="loginBtn" onclick="handleLogin()" />
-            <input type="button" value="Register" id="registerBtn" onclick="toggleForm()" />
+            <input type="button" value="Login" id="loginBtn"/>
+            <input type="button" value="Register" id="registerBtn"/>
         </form>
     </div>
+    
+    <script type="module" src="./JS/login.js"></script>
 </body>
 </html>
