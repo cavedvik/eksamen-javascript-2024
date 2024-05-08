@@ -8,16 +8,15 @@ const pokeFavorites = async () => {
             headers: headers
         });
         if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`)
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const favoritePokemons = await response.json();
         console.log("Favorites fetched:", favoritePokemons.items);
         displayFavorites(favoritePokemons.items);
     } catch (error) {
-        console.error("Error fetching favorites", error)
+        console.error("Error fetching favorites", error);
     }
 }
-
 
 
 const displayFavorites = (favorites) => {
@@ -26,7 +25,7 @@ const displayFavorites = (favorites) => {
         favorites.forEach(data => {
             try {
             console.log("Processing favorite:", data);
-            pokemonItem(data, favoriteDiv, "pokeFavorite");
+            pokemonItem(data, favoriteDiv);
             } catch (error) {
                 console.error("Error processing favorite item", error)
             }
