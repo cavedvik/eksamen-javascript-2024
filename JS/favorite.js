@@ -1,4 +1,3 @@
-
 import { pokemonItem, headers, crudUrl, logOutUser } from "./helpers.js";
 
 const pokeFavorites = async () => {
@@ -39,6 +38,8 @@ const displayFavorites = (favorites) => {
     console.log("Displayed favorites:", favorites);
     
 }
+
+
 
 pokeFavorites();
 logOutUser();

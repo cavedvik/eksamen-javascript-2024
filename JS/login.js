@@ -26,9 +26,9 @@ const handleRegister = async () => {
       const responseData = await response.json();
       console.log("Registrering vellykket:", responseData);
       alert("Registrering vellykket! Vennligst logg inn.");
-      usernameInput.value = '';
-      passwordInput.value = '';
-      toggleForm();
+      usernameInput.value = "";
+      passwordInput.value = "";
+      loginRegistrerForms();
     }
   } catch (error) {
     console.error("Registreringsfeil:", error);
@@ -42,7 +42,7 @@ const fetchUsernamePassword = async () => {
       headers,
     });
     const data = await response.json();
-    return data.items
+    return data.items;
   } catch (error) {
     console.error("Feil ved henting av brukernavn:", error);
     return [];
@@ -52,42 +52,55 @@ const fetchUsernamePassword = async () => {
 const handleLogin = async () => {
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value.trim();
-  const data = { username, password };
 
+  if (!username || !password) {
+    alert("Please fill in both username and password");
+    return;
+  }
+
+  const data = { username, password };
   console.log("Sending login data:", JSON.stringify({ data }));
 
   const usernamePassword = await fetchUsernamePassword();
   const user = usernamePassword.find(
-    (user) => user.username === username && user.password === password);
+    (user) => user.username === username && user.password === password
+  );
   if (user) {
     window.location.href = "index.html";
-    localStorage.setItem("username", username)
+    localStorage.setItem("username", username);
   } else {
     alert("Wrong username or password");
     console.log("feil brukernavn");
   }
-
 };
 
-const toggleForm = () => {
-  const formTitle = document.getElementById("formTitle");
+
+const loginRegistrerForms = () => {
   const loginBtn = document.getElementById("loginBtn");
   const registerBtn = document.getElementById("registerBtn");
+  const backToLogin = document.getElementById("backToLogin")
+  const usernameInput = document.getElementById("username");
+  const passwordInput = document.getElementById("password");
 
-  if (formTitle.textContent === "Login") {
-    formTitle.textContent = "Register";
-    loginBtn.value = "Register";
-    loginBtn.onclick = handleRegister;
-    registerBtn.value = "Login";
-    registerBtn.onclick = toggleForm;
-  } else {
-    formTitle.textContent = "Login";
-    loginBtn.value = "Login";
-    loginBtn.onclick = handleLogin;
-    registerBtn.value = "Register";
-    registerBtn.onclick = toggleForm;
+  loginBtn?.addEventListener("click", handleLogin);
+
+  if (window.location.pathname.includes('login.html')) {
+    registerBtn?.addEventListener("click", () => {
+      window.location.href = "registrer.html";
+    });
+    
+  } else if (window.location.pathname.includes('registrer.html')) {
+    registerBtn?.addEventListener("click", async () => {
+      await handleRegister();
+      window.location.href = "login.html"
+    });
+    backToLogin.addEventListener("click", () => {
+      window.location.href = "login.html";
+    })
   }
 };
-toggleForm();
-logOutUser()
 
+document.addEventListener("DOMContentLoaded", () => {
+  loginRegistrerForms();
+  logOutUser();
+});

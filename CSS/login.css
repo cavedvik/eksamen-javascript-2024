@@ -18,15 +18,10 @@
     text-align: center;
 }
 
-#loginBtn, #registerBtn {
-    color: black;
-    padding: 5px 10px;
-}
-
 #username, #password {
     color: black;
 }
 
-#formTitle {
+#formTitle, #formTitle1 {
     padding-bottom: 40px;
 }
