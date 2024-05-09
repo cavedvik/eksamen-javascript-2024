@@ -2,7 +2,7 @@
 import { pokemonItem, headers, crudUrl, logOutUser } from "./helpers.js";
 
 const pokeFavorites = async () => {
-    const username = sessionStorage.getItem("username");
+    const username = localStorage.getItem("username");
     try {
         const response = await fetch(`${crudUrl}/pokemons`, {
             method: "GET",

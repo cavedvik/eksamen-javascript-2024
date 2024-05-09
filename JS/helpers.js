@@ -57,7 +57,7 @@ export const fetchPokemonDetails = async (url) => {
 
 //lagrer favoritter i crud
 export const addFavouriteCrud = async (pokemon) => {
-  const username = sessionStorage.getItem("username");
+  const username = localStorage.getItem("username");
 
   if (!username) {
     alert("Please log in to add favorites.");
@@ -165,15 +165,15 @@ export const pokemonItem = (data, pokemonDiv) => {
   pokemonDiv.appendChild(pokemonContainer);
 };
 
-//logger bruker ut og sletter fra session
+//logger bruker ut og sletter fra localStorage
 export const logOutUser  = () => {
   const logOut = document.getElementById("logIn");
-  const username = sessionStorage.getItem("username");
+  const username = localStorage.getItem("username");
 
 if (username) {
   logOut.textContent = `${username} Log Out`;
   logOut.addEventListener("click", (event) => {
-    sessionStorage.clear()
+    localStorage.clear()
     window.location.reload();
     event.preventDefault();
   })

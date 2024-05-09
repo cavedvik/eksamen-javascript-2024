@@ -61,13 +61,11 @@ const handleLogin = async () => {
     (user) => user.username === username && user.password === password);
   if (user) {
     window.location.href = "index.html";
-    sessionStorage.setItem("username", username)
+    localStorage.setItem("username", username)
   } else {
     alert("Wrong username or password");
     console.log("feil brukernavn");
   }
-
-  //session storage
 
 };
 
