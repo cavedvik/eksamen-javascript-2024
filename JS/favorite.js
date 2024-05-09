@@ -1,7 +1,8 @@
 
-import { pokemonItem, headers, crudUrl } from "./helpers.js";
+import { pokemonItem, headers, crudUrl, logOutUser } from "./helpers.js";
 
 const pokeFavorites = async () => {
+    const username = sessionStorage.getItem("username");
     try {
         const response = await fetch(`${crudUrl}/pokemons`, {
             method: "GET",
@@ -11,8 +12,9 @@ const pokeFavorites = async () => {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const favoritePokemons = await response.json();
+        const items = favoritePokemons.items.filter(item => item.username === username)
         console.log("Favorites fetched:", favoritePokemons.items);
-        displayFavorites(favoritePokemons.items);
+        displayFavorites(items);
     } catch (error) {
         console.error("Error fetching favorites", error);
     }
@@ -22,7 +24,7 @@ const pokeFavorites = async () => {
 const displayFavorites = (favorites) => {
     const favoriteDiv = document.getElementById("pokeFavorite");
     if (favoriteDiv) {
-        favorites.forEach(data => {
+        favorites.forEach((data) => {
             try {
             console.log("Processing favorite:", data);
             pokemonItem(data, favoriteDiv);
@@ -39,3 +41,4 @@ const displayFavorites = (favorites) => {
 }
 
 pokeFavorites();
+logOutUser();

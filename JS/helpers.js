@@ -57,11 +57,19 @@ export const fetchPokemonDetails = async (url) => {
 
 //lagrer favoritter i crud
 export const addFavouriteCrud = async (pokemon) => {
+  const username = sessionStorage.getItem("username");
+
+  if (!username) {
+    alert("Please log in to add favorites.");
+    return;
+  }
+
   try {
     const response = await fetch(`${crudUrl}/pokemons`, {
       method: "POST",
       headers,
       body: JSON.stringify([{
+        username: username,
         name: pokemon.name,
         sprites: pokemon.sprites,
         types: pokemon.types,
@@ -75,6 +83,7 @@ export const addFavouriteCrud = async (pokemon) => {
     return responseData;
   } catch (error) {
     console.error("There was a problem with the fetch operation:", error);
+    alert("Failed to add to favorites.");
   }
 };
 
@@ -130,7 +139,7 @@ export const pokemonItem = (data, pokemonDiv) => {
 
   pokemonContainer.appendChild(typesElement);
 
-  // Sjekk om _uuid er tilgjengelig og bestem knappen basert på det
+  
   if (data._uuid) {
     const deleteBtn = document.createElement("button");
     deleteBtn.innerText = "Delete";
@@ -156,3 +165,17 @@ export const pokemonItem = (data, pokemonDiv) => {
   pokemonDiv.appendChild(pokemonContainer);
 };
 
+//logger bruker ut og sletter fra session
+export const logOutUser  = () => {
+  const logOut = document.getElementById("logIn");
+  const username = sessionStorage.getItem("username");
+
+if (username) {
+  logOut.textContent = `${username} Log Out`;
+  logOut.addEventListener("click", (event) => {
+    sessionStorage.clear()
+    window.location.reload();
+    event.preventDefault();
+  })
+}
+}
