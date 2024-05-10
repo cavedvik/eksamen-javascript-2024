@@ -29,7 +29,6 @@ const pokeFavorites = async () => {
 };
 
 export const displayFavorites = async (favorites) => {
-  console.log("Attempting to display favorites...");
   const favoriteDiv = document.getElementById("pokeFavorite");
 
   console.log("Favorite div:", favoriteDiv);

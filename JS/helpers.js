@@ -1,7 +1,7 @@
 
 //Globale variabler
 export const crudUrl = "https://crudapi.co.uk/api/v1";
-export const pokeapiUrl = "https://pokeapi.co/api/v2/pokemon?limit=50";
+export const pokeapiUrl = "https://pokeapi.co/api/v2/pokemon";
 export const headers = {
   "Content-Type": "application/json",
   Authorization: "Bearer wYXuv1_mywtLzDEEy4tKMUmd_dvKp5gI3QsHBtKB7mooH5LPyA",
@@ -158,7 +158,7 @@ export const pokemonItem = (data, pokemonDiv) => {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);`;
 
   const pokemonId = document.createElement("p");
-  pokemonId.textContent = `#000${data.id}`;
+  pokemonId.textContent = "#"+`${data.id}`.padStart(4,"0");//les mer om padStart.
   pokemonContainer.appendChild(pokemonId);
 
   if (data.sprites?.other["official-artwork"].front_default) {
@@ -181,11 +181,10 @@ export const pokemonItem = (data, pokemonDiv) => {
     typesElement.appendChild(typeSpan);
   });
 
-  const infoBtn = document.createElement("button");
+  const infoBtn = document.createElement("a");
+  infoBtn.setAttribute("href", `info.html?id=${data.id}`);
   infoBtn.innerText = "Info";
-  infoBtn.addEventListener("click", () => {
-    window.location.href = "info.html"
-  })
+  
   
   pokemonContainer.appendChild(typesElement);
   pokemonContainer.appendChild(infoBtn)
