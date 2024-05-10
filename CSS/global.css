@@ -25,6 +25,13 @@ header {
     gap: 80px;
   }
 
+  a {
+    font-size: 18px;
+   text-decoration: none;
+   margin-left: 5px;
+  }
+
   li {
     list-style: none;
   }
+
