@@ -1,3 +1,4 @@
+
 //Globale variabler
 export const crudUrl = "https://crudapi.co.uk/api/v1";
 export const pokeapiUrl = "https://pokeapi.co/api/v2/pokemon?limit=50";
@@ -80,7 +81,8 @@ export const addFavouriteCrud = async (pokemon) => {
       throw new Error("Network response was not ok");
     }
     const responseData = await response.json();
-    return responseData;
+    updateFavoritesCount()
+    return response 
   } catch (error) {
     console.error("There was a problem with the fetch operation:", error);
     alert("Failed to add to favorites.");
@@ -94,7 +96,8 @@ export const deleteFavoriteCrud = async (pokemon) => {
       method: "DELETE",
       headers,
     });
-
+    updateFavoritesCount()
+    emptyFavorite()
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -102,6 +105,47 @@ export const deleteFavoriteCrud = async (pokemon) => {
     console.error("There was a problem with the fetch operation:", error);
   }
 };
+
+// viser antall favoritter i favorites-linken
+export const updateFavoritesCount = async () => {
+  const username = localStorage.getItem("username");
+  if (!username) {
+    console.log("No username found in localStorage. User might not be logged in.");
+    return;
+  }
+  try {
+    const response = await fetch(`${crudUrl}/pokemons`, {
+      method: "GET",
+      headers: headers,
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+
+    const favoritesCounter = data.items.filter((item) => item.username === username);
+    const favoriteCounter = document.getElementById("favoritesCount");
+    if (!favoriteCounter) {
+        console.error("Element 'favoritesCount' not found in the document.");
+        return
+    }
+    favoriteCounter.innerText = favoritesCounter.length.toString();
+    console.log("Favorites count updated to:", favoritesCounter.length);
+    console.log(response)
+ 
+  } catch (error) {
+    console.error("Error updating favorites count", error);
+  }
+};
+
+export const emptyFavorite = () => {
+  const favoriteDiv = document.getElementById("pokeFavorite");
+  if (favoriteDiv.innerHTML === "") {
+      const emptyFavorite = document.createElement("p");
+      emptyFavorite.textContent = "You dont have any favorite yet!";
+      favoriteDiv.appendChild(emptyFavorite);
+  }
+}
 
 export const pokemonItem = (data, pokemonDiv) => {
   const pokemonContainer = document.createElement("div");
@@ -137,7 +181,14 @@ export const pokemonItem = (data, pokemonDiv) => {
     typesElement.appendChild(typeSpan);
   });
 
+  const infoBtn = document.createElement("button");
+  infoBtn.innerText = "Info";
+  infoBtn.addEventListener("click", () => {
+    window.location.href = "info.html"
+  })
+  
   pokemonContainer.appendChild(typesElement);
+  pokemonContainer.appendChild(infoBtn)
 
   
   if (data._uuid) {
@@ -161,9 +212,11 @@ export const pokemonItem = (data, pokemonDiv) => {
     });
     pokemonContainer.appendChild(addToFavorite);
   }
-
   pokemonDiv.appendChild(pokemonContainer);
 };
+
+
+
 
 //logger bruker ut og sletter fra localStorage
 export const logOutUser  = () => {
@@ -179,3 +232,5 @@ if (username) {
   })
 }
 }
+
+

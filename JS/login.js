@@ -1,4 +1,4 @@
-import { headers, crudUrl, logOutUser } from "./helpers.js";
+import { headers, crudUrl, logOutUser, updateFavoritesCount } from "./helpers.js";
 
 const handleRegister = async () => {
   const usernameInput = document.getElementById("username");
@@ -100,7 +100,7 @@ const loginRegistrerForms = () => {
   }
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-  loginRegistrerForms();
-  logOutUser();
-});
+
+updateFavoritesCount()
+loginRegistrerForms();
+logOutUser();
