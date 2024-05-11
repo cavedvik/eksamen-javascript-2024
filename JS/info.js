@@ -3,17 +3,29 @@ import {
   updateFavoritesCount,
   pokeapiUrl,
   pokemonColors,
-  addFavouriteCrud
+  addFavoriteCrud,
 } from "./helpers.js";
 
-export const fetchPokemonDetails = async (url) => {
+let currentPokemonId = 1;
+
+const urlParams = new URLSearchParams(window.location.search); //les mer om dette
+const paramId = urlParams.get("id");
+if (paramId) {
+  currentPokemonId = parseInt(paramId);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  fetchPokemonDetails(currentPokemonId);
+});
+
+export const fetchPokemonDetails = async (id) => {
+  const url = `${pokeapiUrl}/${id}`;
   try {
     const response = await fetch(url);
 
     if (!response.ok)
       throw new Error(`HTTP error at ${url}! Status: ${response.status}`);
     const pokemonData = await response.json();
-    console.log(url);
     if (!pokemonData) {
       console.error("No data returned from the API");
       return;
@@ -25,13 +37,13 @@ export const fetchPokemonDetails = async (url) => {
 };
 
 const pokemonInfo = (pokemonData) => {
-
-  const pokeInfoContainer = document.getElementById("pokeInfoContainer");
-  if (!pokeInfoContainer) {
+  const pokeInfoDiv = document.getElementById("pokemonInfo");
+  pokeInfoDiv.innerHTML = "";
+  if (!pokeInfoDiv) {
     console.error("pokeInfoContainer not found in the document.");
     return;
   }
-
+  pokeInfoDiv.innerHTML = "";
   const pokeInfo = document.createElement("div");
   pokeInfo.setAttribute("id", "pokeInfo");
 
@@ -83,35 +95,31 @@ const pokemonInfo = (pokemonData) => {
     typesElement.appendChild(typeSpan);
   });
 
-  pokeInfoContainer.appendChild(pokeInfo);
+  const addToFavorite = document.createElement("button");
+  addToFavorite.textContent = "Add to favorite";
+  addToFavorite.addEventListener("click", async () => {
+    const addedPokemon = await addFavoriteCrud(pokemonData);
+    console.log("Pokemon added to favorites:", addedPokemon);
+  });
+  pokeInfo.appendChild(addToFavorite);
 
+  pokeInfoDiv.appendChild(pokeInfo);
 };
-const backToMain = document.getElementById("backBtn");
-backToMain.addEventListener("click", () => {
+document.getElementById("backBtn").addEventListener("click", () => {
   window.history.back();
-})
+});
 
-const addToFavorite = document.getElementById("addToFavoriteBtn");
-addToFavorite.addEventListener("click", async () => {
-  addFavouriteCrud(addToFavorite)
-})
+document.getElementById("nextPokemonBtn").addEventListener("click", () => {
+  currentPokemonId++;
+  fetchPokemonDetails(currentPokemonId);
+});
 
-const nextPokemonBtn = document.getElementById("nextPokemonBtn")
+document.getElementById("previousBtn").addEventListener("click", () => {
+  if (currentPokemonId > 1) {
+    currentPokemonId--;
+    fetchPokemonDetails(currentPokemonId);
+  }
+});
 
-const previousPokemon = document.getElementById("previousBtn")
-
-
-
-
-
-
-
-
-const urlParams = new URLSearchParams(window.location.search); //les mer om dette
-const id = urlParams.get("id");
-
-fetchPokemonDetails(`${pokeapiUrl}/${id}`);
 logOutUser();
 updateFavoritesCount();
-
-//quarry
