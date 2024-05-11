@@ -57,7 +57,7 @@ export const fetchPokemonDetails = async (url) => {
 };
 
 //lagrer favoritter i crud
-export const addFavouriteCrud = async (pokemon) => {
+export const addFavoriteCrud = async (pokemon) => {
   const username = localStorage.getItem("username");
 
   if (!username) {
@@ -203,7 +203,7 @@ export const pokemonItem = (data, pokemonDiv) => {
     addToFavorite.innerText = "Add to Favorite";
     addToFavorite.addEventListener("click", async () => {
       try {
-        const addedPokemon = await addFavouriteCrud(data);
+        const addedPokemon = await addFavoriteCrud(data);
         console.log("Pokemon added to favorites:", addedPokemon);
       } catch (error) {
         console.error("Error adding Pokemon to favorites:", error);
