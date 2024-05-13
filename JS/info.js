@@ -63,6 +63,12 @@ const pokemonInfo = (pokemonData) => {
     pokeInfo.appendChild(imageElement);
   }
 
+  const criesElement = document.createElement("div");
+  criesElement.innerHTML = `
+    <p><audio controls src="${pokemonData.cries.latest}">Your browser does not support the audio element.</audio></p>   
+  `;
+  pokeInfo.appendChild(criesElement);
+
   const abilitiesList = document.createElement("ul");
   pokemonData.abilities.forEach((ability) => {
     const listItem = document.createElement("li");
@@ -79,11 +85,6 @@ const pokemonInfo = (pokemonData) => {
   pokeWeight.textContent = `Weight: ${pokemonData.weight}`;
   pokeInfo.appendChild(pokeWeight);
 
-  const criesElement = document.createElement("div");
-  criesElement.innerHTML = `
-    <p>Game sound: <audio controls src="${pokemonData.cries.latest}">Your browser does not support the audio element.</audio></p>   
-  `;
-  pokeInfo.appendChild(criesElement);
 
   const typesElement = document.createElement("p");
   pokemonData.types.forEach((type) => {
@@ -94,6 +95,7 @@ const pokemonInfo = (pokemonData) => {
     background-color: ${color};`;
     typesElement.appendChild(typeSpan);
   });
+  pokeInfo.appendChild(typesElement)
 
   const addToFavorite = document.createElement("button");
   addToFavorite.textContent = "Add to favorite";

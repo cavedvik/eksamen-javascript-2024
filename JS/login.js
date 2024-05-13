@@ -65,9 +65,11 @@ const handleLogin = async () => {
   const user = usernamePassword.find(
     (user) => user.username === username && user.password === password
   );
+  console.log(user)
   if (user) {
     window.location.href = "index.html";
     localStorage.setItem("username", username);
+    localStorage.setItem("id", user._uuid);
   } else {
     alert("Wrong username or password");
     console.log("feil brukernavn");

@@ -8,7 +8,8 @@ import {
 } from "./helpers.js";
 
 const pokeFavorites = async () => {
-  const username = localStorage.getItem("username");
+  const userId = localStorage.getItem("id");
+
   try {
     const response = await fetch(`${crudUrl}/pokemons`, {
       method: "GET",
@@ -19,7 +20,7 @@ const pokeFavorites = async () => {
     }
     const favoritePokemons = await response.json();
     const items = favoritePokemons.items.filter(
-      (item) => item.username === username
+      (item) => item.userId === userId
     );
     console.log("Favorites fetched:", favoritePokemons.items);
     displayFavorites(items);

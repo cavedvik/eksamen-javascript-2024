@@ -6,6 +6,7 @@ export const headers = {
   "Content-Type": "application/json",
   Authorization: "Bearer wYXuv1_mywtLzDEEy4tKMUmd_dvKp5gI3QsHBtKB7mooH5LPyA",
 };
+let pokemonData;
 
 //hentet farger bassert på type her: "https://gist.github.com/apaleslimghost/0d25ec801ca4fc43317bcff298af43c3"
 export const pokemonColors = {
@@ -56,11 +57,13 @@ export const fetchPokemonDetails = async (url) => {
   }
 };
 
+
+
 //lagrer favoritter i crud
 export const addFavoriteCrud = async (pokemon) => {
-  const username = localStorage.getItem("username");
+  const userId = localStorage.getItem("id")
 
-  if (!username) {
+  if (!userId) {
     alert("Please log in to add favorites.");
     return;
   }
@@ -70,7 +73,7 @@ export const addFavoriteCrud = async (pokemon) => {
       method: "POST",
       headers,
       body: JSON.stringify([{
-        username: username,
+        userId: userId,
         name: pokemon.name,
         sprites: pokemon.sprites,
         types: pokemon.types,
@@ -108,8 +111,8 @@ export const deleteFavoriteCrud = async (pokemon) => {
 
 // viser antall favoritter i favorites-linken
 export const updateFavoritesCount = async () => {
-  const username = localStorage.getItem("username");
-  if (!username) {
+  const userId = localStorage.getItem("id");
+  if (!userId) {
     console.log("No username found in localStorage. User might not be logged in.");
     return;
   }
@@ -123,7 +126,7 @@ export const updateFavoritesCount = async () => {
     }
     const data = await response.json();
 
-    const favoritesCounter = data.items.filter((item) => item.username === username);
+    const favoritesCounter = data.items.filter((item) => item.userId === userId);
     const favoriteCounter = document.getElementById("favoritesCount");
     if (!favoriteCounter) {
         console.error("Element 'favoritesCount' not found in the document.");
@@ -142,6 +145,7 @@ export const emptyFavorite = () => {
   const favoriteDiv = document.getElementById("pokeFavorite");
   if (favoriteDiv.innerHTML === "") {
       const emptyFavorite = document.createElement("p");
+      emptyFavorite.setAttribute("id", "messageEmpty")
       emptyFavorite.textContent = "You dont have any favorite yet!";
       favoriteDiv.appendChild(emptyFavorite);
   }
@@ -151,11 +155,16 @@ export const pokemonItem = (data, pokemonDiv) => {
   const pokemonContainer = document.createElement("div");
   pokemonContainer.style.cssText = `
         background-color: white;
+        position: relative;
+        cursor: pointer;
         border-radius: 10px;
         width: 200px;
         padding: 10px;
         margin: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);`;
+  pokemonContainer.addEventListener("click", () => {
+    window.location.href = `info.html?id=${data.id}`
+  })
 
   const pokemonId = document.createElement("p");
   pokemonId.textContent = "#"+`${data.id}`.padStart(4,"0");//les mer om padStart.
@@ -173,44 +182,30 @@ export const pokemonItem = (data, pokemonDiv) => {
   pokemonContainer.appendChild(nameElement);
 
   const typesElement = document.createElement("p");
-  data.types.forEach(type => {
+  data.types.forEach(types => {
     const typeSpan = document.createElement("span");
-    const color = pokemonColors[type.type.name] || "#ffffff";
-    typeSpan.textContent = `${type.type.name} `;
+    const color = pokemonColors[types.type.name] || "#ffffff";
+    typeSpan.textContent = `${types.type.name} `;
     typeSpan.style.cssText = `background-color: ${color}; color: #000000; padding: 0 15px; border-radius: 2px; margin-right: 5px;`;
     typesElement.appendChild(typeSpan);
   });
 
-  const infoBtn = document.createElement("a");
-  infoBtn.setAttribute("href", `info.html?id=${data.id}`);
-  infoBtn.innerText = "Info";
-  
-  
   pokemonContainer.appendChild(typesElement);
-  pokemonContainer.appendChild(infoBtn)
 
-  
   if (data._uuid) {
     const deleteBtn = document.createElement("button");
     deleteBtn.innerText = "Delete";
-    deleteBtn.addEventListener("click", () => {
+    deleteBtn.style.cssText = `position: absolute; top: 10px; right: 10px;`;
+    deleteBtn.addEventListener("click", (event) => {
+      event.stopPropagation(); //chat gpt hjelp
       deleteFavoriteCrud(data);
       pokemonContainer.remove();
+      
     });
     pokemonContainer.appendChild(deleteBtn);
-  } else {
-    const addToFavorite = document.createElement("button");
-    addToFavorite.innerText = "Add to Favorite";
-    addToFavorite.addEventListener("click", async () => {
-      try {
-        const addedPokemon = await addFavoriteCrud(data);
-        console.log("Pokemon added to favorites:", addedPokemon);
-      } catch (error) {
-        console.error("Error adding Pokemon to favorites:", error);
-      }
-    });
-    pokemonContainer.appendChild(addToFavorite);
+    
   }
+  
   pokemonDiv.appendChild(pokemonContainer);
 };
 
