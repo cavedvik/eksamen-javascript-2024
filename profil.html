@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./CSS/global.css" />
+    <link rel="stylesheet" href="./CSS/profil.css">
+    <title>Pokemons</title>
+  </head>
+  <body>
+    <header>
+      <h1>Pokedex</h1>
+      <nav>
+        <li><a href="index.html">Home</a></li>
+        <li>
+          (<span id="favoritesCount">0</span>)<a
+            id="favoriteCount"
+            href="favorite.html"
+            >Favorites</a
+          >
+        </li>
+        <li><a href="profil.html"></a>Profil</li>
+        <li><a id="logIn" href="login.html">Log in</a></li>
+      </nav>
+    </header>
+    <main>
+      <div id="profilContainer">
+        <form id="profilForm">
+          <h2>Profil</h2>
+          <div>
+              <label for="firstName">My name is </label>
+              <input class="inPut" type="text" id="firstName" />
+          </div>
+          <div>
+              <label for="email">My email is</label>
+              <input class="inPut" type="text" id="email" />
+          </div>
+          <div>
+              <label for="country">I am from</label>
+              <input class="inPut" type="text" id="country" />
+          </div>
+      </form>
+        <div id="changeUserDiv">
+          <h2>Change username or password</h2>
+          <label for="username"></label>
+          <input type="text" id="changeUsername" placeholder="New username">
+          <label for="password"></label>
+          <input type="text" id="changePassword" placeholder="New password">
+          <button id="changeUserPasswordBtn">Submit</button>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <p>© 2024 Pokedex. Alle rettigheter reservert.</p>
+    </footer>
+    <script type="module" src="./JS/script.js"></script>
+  </body>
+</html>
