@@ -1,0 +1,26 @@
+#profilContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    gap: 100px;
+    width: 1000px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 40px;
+}
+
+main{
+    display: flex;
+    justify-content: center;
+}
+
+#profilForm{
+    display: flex;
+    flex-direction: column;
+}
+
+#changeUserDiv {
+    display: flex;
+    flex-direction: column;
+}
+
