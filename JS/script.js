@@ -1,7 +1,10 @@
-import { pokeFetch, logOutUser } from "./helpers.js";
+import { pokeFetch, logOutUser, updateFavoritesCount } from "./helpers.js";
 
+updateFavoritesCount()
 pokeFetch()
 logOutUser()
+
+
 
 
 
