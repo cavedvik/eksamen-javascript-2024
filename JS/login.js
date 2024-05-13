@@ -1,4 +1,4 @@
-import { headers, crudUrl, logOutUser, updateFavoritesCount } from "./helpers.js";
+import { headers, crudUrl, logOutUser, updateFavoritesCount, fetchUsernamePassword } from "./helpers.js";
 
 const handleRegister = async () => {
   const usernameInput = document.getElementById("username");
@@ -35,19 +35,6 @@ const handleRegister = async () => {
   }
 };
 
-const fetchUsernamePassword = async () => {
-  try {
-    const response = await fetch(`${crudUrl}/register`, {
-      method: "GET",
-      headers,
-    });
-    const data = await response.json();
-    return data.items;
-  } catch (error) {
-    console.error("Feil ved henting av brukernavn:", error);
-    return [];
-  }
-};
 
 const handleLogin = async () => {
   const username = document.getElementById("username").value.trim();

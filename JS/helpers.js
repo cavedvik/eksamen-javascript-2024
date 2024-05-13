@@ -58,7 +58,6 @@ export const fetchPokemonDetails = async (url) => {
 };
 
 
-
 //lagrer favoritter i crud
 export const addFavoriteCrud = async (pokemon) => {
   const userId = localStorage.getItem("id")
@@ -151,6 +150,20 @@ export const emptyFavorite = () => {
   }
 }
 
+export const fetchUsernamePassword = async () => {
+  try {
+    const response = await fetch(`${crudUrl}/register`, {
+      method: "GET",
+      headers,
+    });
+    const data = await response.json();
+    return data.items;
+  } catch (error) {
+    console.error("Feil ved henting av brukernavn:", error);
+    return [];
+  }
+};
+
 export const pokemonItem = (data, pokemonDiv) => {
   const pokemonContainer = document.createElement("div");
   pokemonContainer.style.cssText = `
@@ -208,9 +221,6 @@ export const pokemonItem = (data, pokemonDiv) => {
   
   pokemonDiv.appendChild(pokemonContainer);
 };
-
-
-
 
 //logger bruker ut og sletter fra localStorage
 export const logOutUser  = () => {
