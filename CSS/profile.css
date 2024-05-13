@@ -15,8 +15,11 @@ main{
 }
 
 #profilForm{
-    display: flex;
-    flex-direction: column;
+    padding: 40px; 
+    border-radius: 10px;
+    width: 300px; 
+    text-align: center; 
+    
 }
 
 #changeUserDiv {

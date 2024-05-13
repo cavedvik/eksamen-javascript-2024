@@ -5,6 +5,7 @@ import {
   logOutUser,
   updateFavoritesCount,
   emptyFavorite,
+  visibleProfileLink
 } from "./helpers.js";
 
 const pokeFavorites = async () => {
@@ -59,4 +60,5 @@ export const displayFavorites = async (favorites) => {
 document.addEventListener("DOMContentLoaded", function () {
   logOutUser();
   pokeFavorites();
+  visibleProfileLink()
 });

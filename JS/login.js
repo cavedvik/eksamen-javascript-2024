@@ -1,4 +1,4 @@
-import { headers, crudUrl, logOutUser, updateFavoritesCount, fetchUsernamePassword } from "./helpers.js";
+import { headers, crudUrl, logOutUser, updateFavoritesCount, fetchUsernamePassword, visibleProfileLink } from "./helpers.js";
 
 const handleRegister = async () => {
   const usernameInput = document.getElementById("username");
@@ -29,6 +29,7 @@ const handleRegister = async () => {
       usernameInput.value = "";
       passwordInput.value = "";
       loginRegistrerForms();
+      window.location.href = "login.html"
     }
   } catch (error) {
     console.error("Registreringsfeil:", error);
@@ -92,4 +93,5 @@ const loginRegistrerForms = () => {
 
 updateFavoritesCount()
 loginRegistrerForms();
+visibleProfileLink()
 logOutUser();

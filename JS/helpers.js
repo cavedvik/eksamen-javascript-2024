@@ -1,4 +1,3 @@
-
 //Globale variabler
 export const crudUrl = "https://crudapi.co.uk/api/v1";
 export const pokeapiUrl = "https://pokeapi.co/api/v2/pokemon";
@@ -7,6 +6,7 @@ export const headers = {
   Authorization: "Bearer wYXuv1_mywtLzDEEy4tKMUmd_dvKp5gI3QsHBtKB7mooH5LPyA",
 };
 let pokemonData;
+const userId = localStorage.getItem("id");
 
 //hentet farger bassert på type her: "https://gist.github.com/apaleslimghost/0d25ec801ca4fc43317bcff298af43c3"
 export const pokemonColors = {
@@ -33,34 +33,36 @@ export const pokemonColors = {
 //fetcher pokemons
 export const pokeFetch = async () => {
   try {
-      const response = await fetch(pokeapiUrl);
-      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-      const data = await response.json();
-      
-      // Håndter hvert fetch av detaljer parallelt
-      const detailPromises = data.results.map(pokemon => fetchPokemonDetails(pokemon.url));
-      await Promise.all(detailPromises);
+    const response = await fetch(pokeapiUrl);
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    const data = await response.json();
+
+    // Håndter hvert fetch av detaljer parallelt
+    const detailPromises = data.results.map((pokemon) =>
+      fetchPokemonDetails(pokemon.url)
+    );
+    await Promise.all(detailPromises);
   } catch (error) {
-      console.error("Problem fetching data: ", error);
+    console.error("Problem fetching data: ", error);
   }
 };
 
 // Funksjon for å hente detaljer for en enkelt Pokémon
 export const fetchPokemonDetails = async (url) => {
   try {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error(`HTTP error at ${url}! Status: ${response.status}`);
-      const pokemonData = await response.json();
-      pokemonItem(pokemonData, document.getElementById("pokeApi"));
+    const response = await fetch(url);
+    if (!response.ok)
+      throw new Error(`HTTP error at ${url}! Status: ${response.status}`);
+    const pokemonData = await response.json();
+    pokemonItem(pokemonData, document.getElementById("pokeApi"));
   } catch (error) {
-      console.error(`Problem fetching details for pokemon at ${url}: `, error);
+    console.error(`Problem fetching details for pokemon at ${url}: `, error);
   }
 };
 
-
 //lagrer favoritter i crud
 export const addFavoriteCrud = async (pokemon) => {
-  const userId = localStorage.getItem("id")
+  const userId = localStorage.getItem("id");
 
   if (!userId) {
     alert("Please log in to add favorites.");
@@ -71,20 +73,22 @@ export const addFavoriteCrud = async (pokemon) => {
     const response = await fetch(`${crudUrl}/pokemons`, {
       method: "POST",
       headers,
-      body: JSON.stringify([{
-        userId: userId,
-        name: pokemon.name,
-        sprites: pokemon.sprites,
-        types: pokemon.types,
-        id: pokemon.id,
-    }]),
+      body: JSON.stringify([
+        {
+          userId: userId,
+          name: pokemon.name,
+          sprites: pokemon.sprites,
+          types: pokemon.types,
+          id: pokemon.id,
+        },
+      ]),
     });
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
     const responseData = await response.json();
-    updateFavoritesCount()
-    return response 
+    updateFavoritesCount();
+    return response;
   } catch (error) {
     console.error("There was a problem with the fetch operation:", error);
     alert("Failed to add to favorites.");
@@ -98,8 +102,8 @@ export const deleteFavoriteCrud = async (pokemon) => {
       method: "DELETE",
       headers,
     });
-    updateFavoritesCount()
-    emptyFavorite()
+    updateFavoritesCount();
+    emptyFavorite();
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -112,7 +116,9 @@ export const deleteFavoriteCrud = async (pokemon) => {
 export const updateFavoritesCount = async () => {
   const userId = localStorage.getItem("id");
   if (!userId) {
-    console.log("No username found in localStorage. User might not be logged in.");
+    console.log(
+      "No username found in localStorage. User might not be logged in."
+    );
     return;
   }
   try {
@@ -125,16 +131,17 @@ export const updateFavoritesCount = async () => {
     }
     const data = await response.json();
 
-    const favoritesCounter = data.items.filter((item) => item.userId === userId);
+    const favoritesCounter = data.items.filter(
+      (item) => item.userId === userId
+    );
     const favoriteCounter = document.getElementById("favoritesCount");
     if (!favoriteCounter) {
-        console.error("Element 'favoritesCount' not found in the document.");
-        return
+      console.error("Element 'favoritesCount' not found in the document.");
+      return;
     }
     favoriteCounter.innerText = favoritesCounter.length.toString();
     console.log("Favorites count updated to:", favoritesCounter.length);
-    console.log(response)
- 
+    console.log(response);
   } catch (error) {
     console.error("Error updating favorites count", error);
   }
@@ -143,12 +150,22 @@ export const updateFavoritesCount = async () => {
 export const emptyFavorite = () => {
   const favoriteDiv = document.getElementById("pokeFavorite");
   if (favoriteDiv.innerHTML === "") {
-      const emptyFavorite = document.createElement("p");
-      emptyFavorite.setAttribute("id", "messageEmpty")
-      emptyFavorite.textContent = "You dont have any favorite yet!";
-      favoriteDiv.appendChild(emptyFavorite);
+    const emptyFavorite = document.createElement("p");
+    emptyFavorite.setAttribute("id", "messageEmpty");
+    emptyFavorite.textContent = "You dont have any favorite yet!";
+    emptyFavorite.style.cssText = `
+      display: flex;
+      flex-direction: column;
+      gap: 20px;`;
+    favoriteDiv.appendChild(emptyFavorite);
+    const addSomeFavorite = document.createElement("button");
+    addSomeFavorite.textContent = "Add some favorites";
+    emptyFavorite.appendChild(addSomeFavorite);
+    addSomeFavorite.addEventListener("click", () => {
+      window.location.href = "index.html";
+    });
   }
-}
+};
 
 export const fetchUsernamePassword = async () => {
   try {
@@ -176,11 +193,11 @@ export const pokemonItem = (data, pokemonDiv) => {
         margin: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);`;
   pokemonContainer.addEventListener("click", () => {
-    window.location.href = `info.html?id=${data.id}`
-  })
+    window.location.href = `info.html?id=${data.id}`;
+  });
 
   const pokemonId = document.createElement("p");
-  pokemonId.textContent = "#"+`${data.id}`.padStart(4,"0");//les mer om padStart.
+  pokemonId.textContent = "#" + `${data.id}`.padStart(4, "0"); //les mer om padStart.
   pokemonContainer.appendChild(pokemonId);
 
   if (data.sprites?.other["official-artwork"].front_default) {
@@ -195,7 +212,7 @@ export const pokemonItem = (data, pokemonDiv) => {
   pokemonContainer.appendChild(nameElement);
 
   const typesElement = document.createElement("p");
-  data.types.forEach(types => {
+  data.types.forEach((types) => {
     const typeSpan = document.createElement("span");
     const color = pokemonColors[types.type.name] || "#ffffff";
     typeSpan.textContent = `${types.type.name} `;
@@ -213,28 +230,30 @@ export const pokemonItem = (data, pokemonDiv) => {
       event.stopPropagation(); //chat gpt hjelp
       deleteFavoriteCrud(data);
       pokemonContainer.remove();
-      
     });
     pokemonContainer.appendChild(deleteBtn);
-    
   }
-  
+
   pokemonDiv.appendChild(pokemonContainer);
 };
 
 //logger bruker ut og sletter fra localStorage
-export const logOutUser  = () => {
+export const logOutUser = () => {
   const logOut = document.getElementById("logIn");
   const username = localStorage.getItem("username");
+  if (username) {
+    logOut.textContent = `${username} Log Out`;
+    logOut.addEventListener("click", (event) => {
+      localStorage.clear();
+      window.location.reload();
+    });
+  }
+};
 
-if (username) {
-  logOut.textContent = `${username} Log Out`;
-  logOut.addEventListener("click", (event) => {
-    localStorage.clear()
-    window.location.reload();
-    event.preventDefault();
-  })
-}
-}
-
-
+export const visibleProfileLink = () => {
+  if (userId) {
+    document.getElementById("profile").style.display = "block";
+  } else {
+    document.getElementById("profile").style.display = "none";
+  }
+};

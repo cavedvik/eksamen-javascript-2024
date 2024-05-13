@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./CSS/global.css" />
-    <link rel="stylesheet" href="./CSS/profil.css">
+    <link rel="stylesheet" href="./CSS/profile.css">
     <title>Pokemons</title>
   </head>
   <body>
@@ -19,7 +19,7 @@
             >Favorites</a
           >
         </li>
-        <li><a href="profil.html"></a>Profil</li>
+        <li id="profile"><a href="profile.html">Profile</a></li>
         <li><a id="logIn" href="login.html">Log in</a></li>
       </nav>
     </header>
@@ -27,19 +27,21 @@
       <div id="profilContainer">
    
         <div id="changeUserDiv">
-          <h1>Profil</h1>
+          <h1 id="profileId"></h1>
           <h3>Change username or password</h2>
           <label for="username"></label>
           <input type="text" id="changeUsername" placeholder="New username">
+          <button id="changeUserBtn">Submit</button>
           <label for="password"></label>
           <input type="text" id="changePassword" placeholder="New password">
-          <button id="changeUserBtn">Submit</button>
+          <button id="changePasswordBtn">Submit</button>
+          
         </div>
       </div>
     </main>
     <footer>
       <p>© 2024 Pokedex. Alle rettigheter reservert.</p>
     </footer>
-    <script type="module" src="./JS/profil.js"></script>
+    <script type="module" src="./JS/profile.js"></script>
   </body>
 </html>

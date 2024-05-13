@@ -4,6 +4,7 @@ import {
   pokeapiUrl,
   pokemonColors,
   addFavoriteCrud,
+  visibleProfileLink
 } from "./helpers.js";
 
 let currentPokemonId = 1;
@@ -125,3 +126,4 @@ document.getElementById("previousBtn").addEventListener("click", () => {
 
 logOutUser();
 updateFavoritesCount();
+visibleProfileLink()
