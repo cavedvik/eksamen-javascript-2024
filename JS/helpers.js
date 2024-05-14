@@ -43,7 +43,7 @@ export const pokeFetch = async () => {
     const detailPromises = data.results.map((pokemon) =>
       fetchPokemonDetails(pokemon.url)
     );
-    await Promise.all(detailPromises);
+  
 
     // Prepare for the next "load more" increment
     offset += limit;
@@ -51,7 +51,6 @@ export const pokeFetch = async () => {
     console.error("Problem fetching data: ", error);
   }
 };
-
 
 // Funksjon for å hente detaljer for en enkelt Pokémon
 export const fetchPokemonDetails = async (url) => {
@@ -204,6 +203,7 @@ export const fetchUsernamePassword = async () => {
 
 export const pokemonItem = (data, pokemonDiv) => {
   const pokemonContainer = document.createElement("div");
+  pokemonContainer.className = "pokemon";
   pokemonContainer.style.cssText = `
         background-color: white;
         position: relative;

@@ -8,7 +8,7 @@ import {
   visibleProfileLink
 } from "./helpers.js";
 
-const pokeFavorites = async () => {
+const pokeFavorites = async (sortOrder) => {
   const userId = localStorage.getItem("id");
 
   try {
@@ -24,6 +24,7 @@ const pokeFavorites = async () => {
       (item) => item.userId === userId
     );
     console.log("Favorites fetched:", favoritePokemons.items);
+    sortPokemonByName(items, sortOrder)
     displayFavorites(items);
   } catch (error) {
     console.error("Error fetching favorites", error);
@@ -57,8 +58,22 @@ export const displayFavorites = async (favorites) => {
   console.log("Displayed favorites:", favorites);
 };
 
+const sortPokemonByName = (pokemonArray, sortOrder) => {
+  return pokemonArray.sort((a, b) => {
+    if (sortOrder === "asc") {
+      return a.name.localeCompare(b.name)
+    } else if (sortOrder === "desc") {
+      return b.name.localeCompare(a.name)
+    }
+  });
+};
+
+document.getElementById("sortOrder").addEventListener("change", (event) => {
+pokeFavorites(event.target.value)
+})
+
 document.addEventListener("DOMContentLoaded", function () {
   logOutUser();
-  pokeFavorites();
+  pokeFavorites("asc");
   visibleProfileLink()
 });

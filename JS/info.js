@@ -7,13 +7,11 @@ import {
   visibleProfileLink,
 } from "./helpers.js";
 
-let currentPokemonId = 1;
+//history pushState
 
 const urlParams = new URLSearchParams(window.location.search); //les mer om dette
-const paramId = urlParams.get("id");
-if (paramId) {
-  currentPokemonId = parseInt(paramId);
-}
+let currentPokemonId = urlParams.get("id") ? parseInt(urlParams.get("id"), 10) : 1 ;
+
 
 document.addEventListener("DOMContentLoaded", () => {
   fetchPokemonDetails(currentPokemonId);

@@ -9,7 +9,6 @@ import {
 
 export const pokeFetchByType = async (type) => {
   if (!type) {
-    console.error("No type selected.");
     return;
   }
 
