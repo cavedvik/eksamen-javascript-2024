@@ -153,19 +153,31 @@ export const updateFavoritesCount = async () => {
 };
 
 export const emptyFavorite = () => {
+  const userId = localStorage.getItem("id");
   const favoriteDiv = document.getElementById("pokeFavorite");
-  if (favoriteDiv.innerHTML === "") {
-    const emptyFavorite = document.createElement("p");
-    emptyFavorite.setAttribute("id", "messageEmpty");
-    emptyFavorite.textContent = "You dont have any favorite yet!";
-    emptyFavorite.style.cssText = `
+
+  favoriteDiv.innerHTML = "";
+
+  if (!userId) {
+
+    const logInFirst = document.createElement("p");
+    logInFirst.textContent = "You need to be logged in to see your favorites";
+    favoriteDiv.appendChild(logInFirst);
+  } else {
+    const emptyFavoriteP = document.createElement("p");
+    emptyFavoriteP.setAttribute("id", "messageEmpty");
+    emptyFavoriteP.textContent = "You don't have any favorites yet!";
+    emptyFavoriteP.style.cssText = `
       display: flex;
       flex-direction: column;
       gap: 20px;`;
-    favoriteDiv.appendChild(emptyFavorite);
+    favoriteDiv.appendChild(emptyFavoriteP);
+
     const addSomeFavorite = document.createElement("button");
     addSomeFavorite.textContent = "Add some favorites";
-    emptyFavorite.appendChild(addSomeFavorite);
+    addSomeFavorite.style.cssText = "padding: 10px; margin-top: 10px;";
+    emptyFavoriteP.appendChild(addSomeFavorite);
+
     addSomeFavorite.addEventListener("click", () => {
       window.location.href = "index.html";
     });
