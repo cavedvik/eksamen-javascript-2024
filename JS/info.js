@@ -4,7 +4,7 @@ import {
   pokeapiUrl,
   pokemonColors,
   addFavoriteCrud,
-  visibleProfileLink
+  visibleProfileLink,
 } from "./helpers.js";
 
 let currentPokemonId = 1;
