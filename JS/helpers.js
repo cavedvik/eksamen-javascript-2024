@@ -155,33 +155,32 @@ export const updateFavoritesCount = async () => {
 export const emptyFavorite = () => {
   const userId = localStorage.getItem("id");
   const favoriteDiv = document.getElementById("pokeFavorite");
-
   favoriteDiv.innerHTML = "";
 
+  const messageP = document.createElement("p");
+  const button = document.createElement("button");
+  button.textContent = "Add some favorites";
+  button.style.cssText = "padding: 10px; margin-top: 10px;";
+  
   if (!userId) {
-
-    const logInFirst = document.createElement("p");
-    logInFirst.textContent = "You need to be logged in to see your favorites";
-    favoriteDiv.appendChild(logInFirst);
+    messageP.textContent = "You need to be logged in to see your favorites.";
+    messageP.setAttribute("id", "messageLogin");
+    button.textContent = "Log in";
+    button.addEventListener("click", () => {
+      window.location.href = "login.html";
+    });
+    favoriteDiv.appendChild(messageP);
+    favoriteDiv.appendChild(button);
   } else {
-    const emptyFavoriteP = document.createElement("p");
-    emptyFavoriteP.setAttribute("id", "messageEmpty");
-    emptyFavoriteP.textContent = "You don't have any favorites yet!";
-    emptyFavoriteP.style.cssText = `
-      display: flex;
-      flex-direction: column;
-      gap: 20px;`;
-    favoriteDiv.appendChild(emptyFavoriteP);
-
-    const addSomeFavorite = document.createElement("button");
-    addSomeFavorite.textContent = "Add some favorites";
-    addSomeFavorite.style.cssText = "padding: 10px; margin-top: 10px;";
-    emptyFavoriteP.appendChild(addSomeFavorite);
-
-    addSomeFavorite.addEventListener("click", () => {
+    messageP.textContent = "You don't have any favorites yet!";
+    messageP.setAttribute("id", "messageEmpty");
+    button.addEventListener("click", () => {
       window.location.href = "index.html";
     });
+    favoriteDiv.appendChild(messageP);
+    favoriteDiv.appendChild(button);
   }
+
 };
 
 export const fetchUsernamePassword = async () => {
@@ -193,7 +192,7 @@ export const fetchUsernamePassword = async () => {
     const data = await response.json();
     return data.items;
   } catch (error) {
-    console.error("Feil ved henting av brukernavn:", error);
+    console.error("Error fetching username:", error);
     return [];
   }
 };
