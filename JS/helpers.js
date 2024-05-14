@@ -5,7 +5,9 @@ export const headers = {
   "Content-Type": "application/json",
   Authorization: "Bearer wYXuv1_mywtLzDEEy4tKMUmd_dvKp5gI3QsHBtKB7mooH5LPyA",
 };
-let pokemonData;
+let offset = 0;
+const limit = 20;
+
 const userId = localStorage.getItem("id");
 
 //hentet farger bassert på type her: "https://gist.github.com/apaleslimghost/0d25ec801ca4fc43317bcff298af43c3"
@@ -33,19 +35,23 @@ export const pokemonColors = {
 //fetcher pokemons
 export const pokeFetch = async () => {
   try {
-    const response = await fetch(pokeapiUrl);
+    const url = `${pokeapiUrl}?limit=${limit}&offset=${offset}`;
+    const response = await fetch(url);
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
     const data = await response.json();
 
-    // Håndter hvert fetch av detaljer parallelt
     const detailPromises = data.results.map((pokemon) =>
       fetchPokemonDetails(pokemon.url)
     );
     await Promise.all(detailPromises);
+
+    // Prepare for the next "load more" increment
+    offset += limit;
   } catch (error) {
     console.error("Problem fetching data: ", error);
   }
 };
+
 
 // Funksjon for å hente detaljer for en enkelt Pokémon
 export const fetchPokemonDetails = async (url) => {
@@ -55,6 +61,7 @@ export const fetchPokemonDetails = async (url) => {
       throw new Error(`HTTP error at ${url}! Status: ${response.status}`);
     const pokemonData = await response.json();
     pokemonItem(pokemonData, document.getElementById("pokeApi"));
+    return pokemonData;
   } catch (error) {
     console.error(`Problem fetching details for pokemon at ${url}: `, error);
   }
@@ -140,11 +147,11 @@ export const updateFavoritesCount = async () => {
       return;
     }
     if (favoritesCounter.length > 0) {
-      favoriteLink.innerText = `(${favoritesCounter.length}) Favorites`
+      favoriteLink.innerText = `(${favoritesCounter.length}) Favorites`;
     } else {
       favoriteLink.innerText = "Favorites";
     }
-    
+
     console.log("Favorites count updated to:", favoritesCounter.length);
     console.log(response);
   } catch (error) {
@@ -155,13 +162,12 @@ export const updateFavoritesCount = async () => {
 export const emptyFavorite = () => {
   const userId = localStorage.getItem("id");
   const favoriteDiv = document.getElementById("pokeFavorite");
-  favoriteDiv.innerHTML = "";
 
   const messageP = document.createElement("p");
   const button = document.createElement("button");
   button.textContent = "Add some favorites";
   button.style.cssText = "padding: 10px; margin-top: 10px;";
-  
+
   if (!userId) {
     messageP.textContent = "You need to be logged in to see your favorites.";
     messageP.setAttribute("id", "messageLogin");
@@ -171,17 +177,16 @@ export const emptyFavorite = () => {
     });
     favoriteDiv.appendChild(messageP);
     favoriteDiv.appendChild(button);
-  } else {
-    messageP.textContent = "You don't have any favorites yet!";
-    messageP.setAttribute("id", "messageEmpty");
-    button.addEventListener("click", () => {
-      window.location.href = "index.html";
-    });
-    favoriteDiv.appendChild(messageP);
-    favoriteDiv.appendChild(button);
-  }
-
-};
+  } else if (favoriteDiv.innerHTML === "") {
+      messageP.textContent = "You don't have any favorites yet!";
+      messageP.setAttribute("id", "messageEmpty");
+      button.addEventListener("click", () => {
+        window.location.href = "index.html";
+      });
+      favoriteDiv.appendChild(messageP);
+      favoriteDiv.appendChild(button);
+    }
+  };
 
 export const fetchUsernamePassword = async () => {
   try {
@@ -273,3 +278,6 @@ export const visibleProfileLink = () => {
     document.getElementById("profile").style.display = "none";
   }
 };
+
+
+
