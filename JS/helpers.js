@@ -134,12 +134,17 @@ export const updateFavoritesCount = async () => {
     const favoritesCounter = data.items.filter(
       (item) => item.userId === userId
     );
-    const favoriteCounter = document.getElementById("favoritesCount");
-    if (!favoriteCounter) {
+    const favoriteLink = document.getElementById("favoriteCount");
+    if (!favoriteLink) {
       console.error("Element 'favoritesCount' not found in the document.");
       return;
     }
-    favoriteCounter.innerText = favoritesCounter.length.toString();
+    if (favoritesCounter.length > 0) {
+      favoriteLink.innerText = `(${favoritesCounter.length}) Favorites`
+    } else {
+      favoriteLink.innerText = "Favorites";
+    }
+    
     console.log("Favorites count updated to:", favoritesCounter.length);
     console.log(response);
   } catch (error) {
@@ -188,8 +193,8 @@ export const pokemonItem = (data, pokemonDiv) => {
         position: relative;
         cursor: pointer;
         border-radius: 10px;
-        width: 200px;
-        padding: 10px;
+        width: 250px;
+        padding: 20px;
         margin: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);`;
   pokemonContainer.addEventListener("click", () => {
@@ -202,7 +207,7 @@ export const pokemonItem = (data, pokemonDiv) => {
 
   if (data.sprites?.other["official-artwork"].front_default) {
     const imageElement = document.createElement("img");
-    imageElement.style.cssText = `width: 100px; height: 100px;`;
+    imageElement.style.cssText = `width: 200px; height: 200px;`;
     imageElement.src = data.sprites.other["official-artwork"].front_default;
     pokemonContainer.appendChild(imageElement);
   }
