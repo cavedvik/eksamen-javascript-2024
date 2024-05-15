@@ -8,7 +8,7 @@ import {
 } from "./helpers.js";
 
 //history pushState
-
+//---------------henter id fra url i nettleser-----------------------------------
 const urlParams = new URLSearchParams(window.location.search); //les mer om dette
 let currentPokemonId = urlParams.get("id") ? parseInt(urlParams.get("id"), 10) : 1 ;
 

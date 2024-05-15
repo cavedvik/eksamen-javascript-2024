@@ -1,4 +1,13 @@
-import { headers, crudUrl, logOutUser, updateFavoritesCount, fetchUsernamePassword, visibleProfileLink } from "./helpers.js";
+import {
+  headers,
+  crudUrl,
+  logOutUser,
+  updateFavoritesCount,
+  fetchUsernamePassword,
+  visibleProfileLink,
+} from "./helpers.js";
+
+//---------------Registrere og logg inn---------------------------
 
 const handleRegister = async () => {
   const usernameInput = document.getElementById("username");
@@ -29,13 +38,12 @@ const handleRegister = async () => {
       usernameInput.value = "";
       passwordInput.value = "";
       loginRegistrerForms();
-      window.location.href = "login.html"
+      window.location.href = "login.html";
     }
   } catch (error) {
     console.error("Registreringsfeil:", error);
   }
 };
-
 
 const handleLogin = async () => {
   const username = document.getElementById("username").value.trim();
@@ -53,7 +61,7 @@ const handleLogin = async () => {
   const user = usernamePassword.find(
     (user) => user.username === username && user.password === password
   );
-  console.log(user)
+  console.log(user);
   if (user) {
     window.location.href = "index.html";
     localStorage.setItem("username", username);
@@ -64,34 +72,31 @@ const handleLogin = async () => {
   }
 };
 
-
 const loginRegistrerForms = () => {
   const loginBtn = document.getElementById("loginBtn");
   const registerBtn = document.getElementById("registerBtn");
-  const backToLogin = document.getElementById("backToLogin")
+  const backToLogin = document.getElementById("backToLogin");
   const usernameInput = document.getElementById("username");
   const passwordInput = document.getElementById("password");
 
   loginBtn?.addEventListener("click", handleLogin);
 
-  if (window.location.pathname.includes('login.html')) {
+  if (window.location.pathname.includes("login.html")) {
     registerBtn?.addEventListener("click", () => {
       window.location.href = "registrer.html";
     });
-    
-  } else if (window.location.pathname.includes('registrer.html')) {
+  } else if (window.location.pathname.includes("registrer.html")) {
     registerBtn?.addEventListener("click", async () => {
       await handleRegister();
-      window.location.href = "login.html"
+      window.location.href = "login.html";
     });
     backToLogin.addEventListener("click", () => {
       window.location.href = "login.html";
-    })
+    });
   }
 };
 
-
-updateFavoritesCount()
+updateFavoritesCount();
 loginRegistrerForms();
-visibleProfileLink()
+visibleProfileLink();
 logOutUser();

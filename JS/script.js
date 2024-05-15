@@ -3,7 +3,6 @@ import {
   logOutUser,
   updateFavoritesCount,
   visibleProfileLink,
-  pokeapiUrl,
   fetchPokemonDetails,
 } from "./helpers.js";
 
@@ -11,9 +10,7 @@ export const pokeFetchByType = async (type) => {
   if (!type) {
     return;
   }
-
   const url = `https://pokeapi.co/api/v2/type/${type.toLowerCase()}`;
-
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -27,14 +24,16 @@ export const pokeFetchByType = async (type) => {
   }
 };
 
+//Type select
 document
   .getElementById("pokemonTypeSelect")
   .addEventListener("change", function () {
     pokeFetchByType(this.value);
   });
 
+  //Load more knapp
 document.getElementById("loadMore").addEventListener("click", pokeFetch);
-//browser history push state
+
 pokeFetchByType();
 updateFavoritesCount();
 pokeFetch();

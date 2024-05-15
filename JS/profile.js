@@ -4,11 +4,12 @@ import {
   logOutUser,
   fetchUsernamePassword,
   visibleProfileLink
-  
 } from "./helpers.js";
 
 const userId = localStorage.getItem("id");
 const username = localStorage.getItem("username");
+
+//------------Endre brukernavn og passord----------------------
 
 const changeUsername = async () => {
  const username = localStorage.getItem("username")
@@ -84,6 +85,10 @@ const changePassword = async () => {
    }
  };
 
+ document.getElementById("profileId").innerHTML = `
+Profile for user:
+ ${username}`;
+
 document.getElementById("changeUserBtn").addEventListener("click", () => {
   changeUsername();
 });
@@ -91,14 +96,6 @@ document.getElementById("changeUserBtn").addEventListener("click", () => {
 document.getElementById("changePasswordBtn").addEventListener("click", () => {
   changePassword();
 });
-
-
-
-document.getElementById("profileId").innerHTML = `
-Profile for user:
- ${username}`;
-
-
 
 logOutUser()
 visibleProfileLink()
