@@ -79,6 +79,19 @@ const loginRegistrerForms = () => {
   const usernameInput = document.getElementById("username");
   const passwordInput = document.getElementById("password");
 
+  const enterKeyPress = (event) => {
+    if (event.key === "Enter") {
+      if (window.location.pathname.includes("login.html")) {
+        handleLogin();
+      } else if (window.location.pathname.includes("registrer.html")) {
+        handleRegister();
+      }
+    }
+  };
+
+  usernameInput.addEventListener("keydown", enterKeyPress);
+  passwordInput.addEventListener("keydown", enterKeyPress);
+
   loginBtn?.addEventListener("click", handleLogin);
 
   if (window.location.pathname.includes("login.html")) {
@@ -95,6 +108,12 @@ const loginRegistrerForms = () => {
     });
   }
 };
+
+updateFavoritesCount();
+loginRegistrerForms();
+visibleProfileLink();
+logOutUser();
+
 
 updateFavoritesCount();
 loginRegistrerForms();
