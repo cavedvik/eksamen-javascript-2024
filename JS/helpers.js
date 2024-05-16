@@ -44,8 +44,6 @@ export const pokeFetch = async () => {
       fetchPokemonDetails(pokemon.url)
     );
   
-
-    // Prepare for the next "load more" increment
     offset += limit;
   } catch (error) {
     console.error("Problem fetching data: ", error);
@@ -218,7 +216,7 @@ export const pokemonItem = (data, pokemonDiv) => {
   });
 
   const pokemonId = document.createElement("p");
-  pokemonId.textContent = "#" + `${data.id}`.padStart(4, "0"); //les mer om padStart.
+  pokemonId.textContent =  `#${data.id}`;
   pokemonContainer.appendChild(pokemonId);
 
   if (data.sprites?.other["official-artwork"].front_default) {
