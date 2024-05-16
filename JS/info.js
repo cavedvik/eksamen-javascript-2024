@@ -99,6 +99,8 @@ const pokemonInfo = (pokemonData) => {
   const addToFavorite = document.createElement("button");
   addToFavorite.textContent = "Add to favorite";
   addToFavorite.addEventListener("click", async () => {
+    const addedPokemon = await addFavoriteCrud(pokemonData);
+    console.log("Pokemon added to favorites:", addedPokemon);
   });
   pokeInfo.appendChild(addToFavorite);
 
