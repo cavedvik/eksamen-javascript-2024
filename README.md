@@ -24,4 +24,4 @@ Velkommen til Pokedex! Denne websiden tillater brukere å utforske pokemon verde
 
 ## Bidra
 
-Jeg ønsker bidrag velkommen for å forbedre Pokedex-nettstedet. Hvis du har noen forslag eller ønsker å rapportere et problem, vennligst ta kontakt.
+Jeg ønsker bidrag for å forbedre Pokedex-nettstedet. Hvis du har noen forslag eller ønsker å rapportere et problem, vennligst ta kontakt.
