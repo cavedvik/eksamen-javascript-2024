@@ -7,7 +7,7 @@ Velkommen til Pokedex! Denne websiden tillater brukere å utforske pokemon verde
 
 ### Brukerregistrering og innlogging
 - **Registrer:** Nye brukere kan opprette en konto via brukernavn og passord.
-- **Logg inn: **Eksisterende brukere kan logge inn med brukernavn og passord for å få tilgang til egen konto og pokemon favorittene sine.
+- **Logg inn:** Eksisterende brukere kan logge inn med brukernavn og passord for å få tilgang til egen konto og pokemon favorittene sine.
   
 ### Bla igjennom pokemon
 - **Filtrere etter type:** Brukere kan filtrere Pokemon basert på type (f.eks ild, vann og greess) via en option.
