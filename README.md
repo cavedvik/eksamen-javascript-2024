@@ -1,7 +1,7 @@
 # Pokedex webside
 
-Velkommen til Pokedex! Dette siden tillater brukere å utforske pokemon verden,
-Registrere ny bruker og legge til favoritt Pokemonen deres. 
+Velkommen til Pokedex! Denne websiden tillater brukere å utforske pokemon verden, registrere ny bruker og legge til favoritt Pokemonen deres i en egen favoritt liste. 
+
 
 ##Funksjoner
 ###Brukerregistrering og innlogging
