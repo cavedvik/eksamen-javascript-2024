@@ -12,7 +12,6 @@ const username = localStorage.getItem("username");
 //------------Endre brukernavn og passord----------------------
 
 const changeUsername = async () => {
- const username = localStorage.getItem("username")
   const usernameInput = document.getElementById("changeUsername");
   const newUsername = usernameInput.value.trim();
 
@@ -38,8 +37,6 @@ const changeUsername = async () => {
     });
 
     if (response.ok) {
-      const responseData = await response.json();
-      console.log("user update ok,", responseData);
       alert("Your details have been updated successfully");
       localStorage.setItem("username", newUsername);
       usernameInput.value = "";
@@ -54,7 +51,6 @@ const changeUsername = async () => {
 };
 
 const changePassword = async () => {
-  const username = localStorage.getItem("id")
    const passwordInput = document.getElementById("changePassword");
    const newPassword = passwordInput.value.trim();
  
@@ -72,7 +68,6 @@ const changePassword = async () => {
  
      if (response.ok) {
        const responseData = await response.json();
-       console.log("user update ok,", responseData);
        alert("Your details have been updated successfully");
        passwordInput.value = "";
        window.location.reload();

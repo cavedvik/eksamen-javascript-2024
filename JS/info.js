@@ -10,7 +10,7 @@ import {
 
 
 const urlParams = new URLSearchParams(window.location.search); //chat gpt hjelp, henter id fra url
-let currentPokemonId = urlParams.get("id") ? parseInt(urlParams.get("id"), 10) : 1 ;
+let currentPokemonId = urlParams.get("id") ? parseInt(urlParams.get("id"), 10) : 1 ;//chat gpt hjelp
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -99,8 +99,6 @@ const pokemonInfo = (pokemonData) => {
   const addToFavorite = document.createElement("button");
   addToFavorite.textContent = "Add to favorite";
   addToFavorite.addEventListener("click", async () => {
-    const addedPokemon = await addFavoriteCrud(pokemonData);
-    console.log("Pokemon added to favorites:", addedPokemon);
   });
   pokeInfo.appendChild(addToFavorite);
 

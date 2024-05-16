@@ -36,8 +36,6 @@ const handleRegister = async () => {
     });
 
     if (response.ok && !usernameTaken) {
-      const responseData = await response.json();
-      console.log("Registration successful:", responseData);
       alert("Registration successful! Please log in.");
       usernameInput.value = "";
       passwordInput.value = "";
@@ -58,21 +56,18 @@ const handleLogin = async () => {
     return;
   }
 
-  const data = { username, password };
-  console.log("Sending login data:", JSON.stringify({ data }));
-
   const usernamePassword = await fetchUsernamePassword();
   const user = usernamePassword.find(
     (user) => user.username === username && user.password === password
   );
-  console.log(user);
+
   if (user) {
     window.location.href = "index.html";
     localStorage.setItem("username", username);
     localStorage.setItem("id", user._uuid);
   } else {
     alert("Wrong username or password");
-    console.log("feil brukernavn");
+
   }
 };
 

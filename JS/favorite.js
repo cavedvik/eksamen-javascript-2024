@@ -107,7 +107,6 @@ const deleteAllFavorites = async () => {
     emptyFavorite();
     updateFavoritesCount();
     window.location.reload();
-    console.log("All favorites deleted successfully.");
   } catch (error) {
     console.error("Error deleting all favorites:", error);
   }
