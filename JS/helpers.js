@@ -149,6 +149,7 @@ export const updateFavoritesCount = async () => {
       favoriteLink.innerText = "Favorites";
     }
 
+
   } catch (error) {
     console.error("Error updating favorites count", error);
   }
@@ -243,6 +244,7 @@ export const pokemonItem = (data, pokemonDiv) => {
     const deleteBtn = document.createElement("button");
     deleteBtn.innerText = "Delete";
     deleteBtn.style.cssText = `position: absolute; top: 10px; right: 10px;`;
+
     deleteBtn.addEventListener("click", (event) => {
       event.stopPropagation(); //chat gpt hjelp
       deleteFavoriteCrud(data);
@@ -254,7 +256,6 @@ export const pokemonItem = (data, pokemonDiv) => {
   pokemonDiv.appendChild(pokemonContainer);
 };
 
-//logger bruker ut og sletter fra localStorage
 export const logOutUser = () => {
   const logOut = document.getElementById("logIn");
   const username = localStorage.getItem("username");

@@ -6,30 +6,44 @@ import {
   visibleProfileLink
 } from "./helpers.js";
 
+
 const userId = localStorage.getItem("id");
 const username = localStorage.getItem("username");
 
 //------------Endre brukernavn og passord----------------------
 
-const changeUsername = async () => {
+document.getElementById("profileId").innerHTML = `
+Profile for user:
+ ${username}`;
+
+//chat gpt hjelp
+const changeUserInfo = async () => {
   const usernameInput = document.getElementById("changeUsername");
+  const passwordInput = document.getElementById("changePassword");
   const newUsername = usernameInput.value.trim();
+  const newPassword = passwordInput.value.trim();
 
   const data = {};
   if (newUsername) {
-    data.username = newUsername
-  };
+    data.username = newUsername;
+  }
+  if (newPassword) {
+    data.password = newPassword;
+  }
 
   try {
-    const existingUsers = await fetchUsernamePassword();
-    const usernameTaken = existingUsers.find(
-      (user) => user.username === newUsername && user.id !== userId
-    );
+    if (newUsername) {
+      const existingUsers = await fetchUsernamePassword();
+      const usernameTaken = existingUsers.find(
+        (user) => user.username === newUsername && user.id !== userId
+      );
 
-    if (usernameTaken) {
-      alert("Username already taken. Choose another");
-      return
+      if (usernameTaken) {
+        alert("Username already taken. Choose another");
+        return;
+      }
     }
+
     const response = await fetch(`${crudUrl}/register/${userId}`, {
       method: "PUT",
       headers,
@@ -38,73 +52,40 @@ const changeUsername = async () => {
 
     if (response.ok) {
       alert("Your details have been updated successfully");
-      localStorage.setItem("username", newUsername);
+      if (newUsername) {
+        localStorage.setItem("username", newUsername);
+      }
       usernameInput.value = "";
+      passwordInput.value = "";
       window.location.reload();
     } else {
-      throw new Error("Feiled to update user details.");
+      throw new Error("Failed to update user details.");
     }
   } catch (error) {
     console.error("Error updating user details:", error);
-    alert("Failed to update your details. pleas try again.");
+    alert("Failed to update your details. Please try again.");
   }
 };
-
-const changePassword = async () => {
-   const passwordInput = document.getElementById("changePassword");
-   const newPassword = passwordInput.value.trim();
- 
-   const data = {};
-   if (newPassword) {
-    data.password = newPassword;
-  }
- 
-   try {
-     const response = await fetch(`${crudUrl}/register/${userId}`, {
-       method: "PUT",
-       headers,
-       body: JSON.stringify(data),
-     });
- 
-     if (response.ok) {
-       const responseData = await response.json();
-       alert("Your details have been updated successfully");
-       passwordInput.value = "";
-       window.location.reload();
-     } else {
-       throw new Error("Failed to update user details.");
-     }
-   } catch (error) {
-     console.error("Error updating user details:", error);
-     alert("Failed to update your details. pleas try again.");
-   }
- };
-
- document.getElementById("profileId").innerHTML = `
-Profile for user:
- ${username}`;
 
 const usernameInput = document.getElementById("changeUsername");
 const passwordInput = document.getElementById("changePassword");
 
 usernameInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
-    changeUsername();
-    event.preventDefault(); 
+    changeUserInfo();
+    event.preventDefault();
   }
 });
 
 passwordInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
-    changePassword();
-    event.preventDefault(); 
+    changeUserInfo();
+    event.preventDefault();
   }
 });
 
-document.getElementById("changeUserBtn").addEventListener("click", changeUsername);
-document.getElementById("changePasswordBtn").addEventListener("click", changePassword);
+document.getElementById("changeUserBtn").addEventListener("click", changeUserInfo);
+document.getElementById("changePasswordBtn").addEventListener("click", changeUserInfo);
 
-
-logOutUser()
-visibleProfileLink()
-
+logOutUser();
+visibleProfileLink();

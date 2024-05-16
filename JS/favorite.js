@@ -116,8 +116,6 @@ document.getElementById("deleteAll").addEventListener("click", () => {
   deleteAllFavorites();
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-  logOutUser();
-  pokeFavorites("asc");
-  visibleProfileLink();
-});
+logOutUser();
+pokeFavorites("asc");
+visibleProfileLink();
