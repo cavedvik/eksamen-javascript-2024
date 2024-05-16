@@ -89,13 +89,26 @@ const changePassword = async () => {
 Profile for user:
  ${username}`;
 
-document.getElementById("changeUserBtn").addEventListener("click", () => {
-  changeUsername();
+const usernameInput = document.getElementById("changeUsername");
+const passwordInput = document.getElementById("changePassword");
+
+usernameInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    changeUsername();
+    event.preventDefault(); 
+  }
 });
 
-document.getElementById("changePasswordBtn").addEventListener("click", () => {
-  changePassword();
+passwordInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    changePassword();
+    event.preventDefault(); 
+  }
 });
+
+document.getElementById("changeUserBtn").addEventListener("click", changeUsername);
+document.getElementById("changePasswordBtn").addEventListener("click", changePassword);
+
 
 logOutUser()
 visibleProfileLink()

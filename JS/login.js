@@ -15,6 +15,10 @@ const handleRegister = async () => {
   const username = usernameInput.value;
   const password = passwordInput.value;
 
+  if (!username || !password) {
+    alert("Both username and password must be filled out.");
+    return;
+  }
   try {
     const existingUsers = await fetchUsernamePassword();
     const usernameTaken = existingUsers.some(
@@ -33,15 +37,15 @@ const handleRegister = async () => {
 
     if (response.ok && !usernameTaken) {
       const responseData = await response.json();
-      console.log("Registrering vellykket:", responseData);
-      alert("Registrering vellykket! Vennligst logg inn.");
+      console.log("Registration successful:", responseData);
+      alert("Registration successful! Please log in.");
       usernameInput.value = "";
       passwordInput.value = "";
       loginRegistrerForms();
       window.location.href = "login.html";
     }
   } catch (error) {
-    console.error("Registreringsfeil:", error);
+    console.error("Registration error:", error);
   }
 };
 
@@ -115,7 +119,3 @@ visibleProfileLink();
 logOutUser();
 
 
-updateFavoritesCount();
-loginRegistrerForms();
-visibleProfileLink();
-logOutUser();
