@@ -5,7 +5,7 @@ import {
   logOutUser,
   updateFavoritesCount,
   emptyFavorite,
-  visibleProfileLink
+  visibleProfileLink,
 } from "./helpers.js";
 
 const pokeFavorites = async (sortOrder) => {
@@ -23,8 +23,7 @@ const pokeFavorites = async (sortOrder) => {
     const items = favoritePokemons.items.filter(
       (item) => item.userId === userId
     );
-    console.log("Favorites fetched:", favoritePokemons.items);
-    sortPokemonByName(items, sortOrder)
+    sortPokemonByName(items, sortOrder);
     displayFavorites(items);
   } catch (error) {
     console.error("Error fetching favorites", error);
@@ -33,8 +32,8 @@ const pokeFavorites = async (sortOrder) => {
 
 export const displayFavorites = async (favorites) => {
   const favoriteDiv = document.getElementById("pokeFavorite");
-
-  console.log("Favorite div:", favoriteDiv);
+  const sortOrderSelect = document.getElementById("sortOrder");
+  const deleteAllButton = document.getElementById("deleteAll");
 
   if (!favoriteDiv) {
     console.error("Failed to find 'pokeFavorite' element.");
@@ -43,37 +42,83 @@ export const displayFavorites = async (favorites) => {
   favoriteDiv.innerHTML = "";
   if (favorites.length > 0) {
     favorites.forEach((data) => {
-      console.log("PokemonDiv before calling pokemonItem:", favoriteDiv);
       try {
         pokemonItem(data, favoriteDiv);
-        console.log("Processing favorite:", data);
       } catch (error) {
         console.error("Error processing favorite item", error);
       }
+      sortOrderSelect.style.display = "block";
+      deleteAllButton.style.display = "block";
     });
   } else {
     emptyFavorite();
+    sortOrderSelect.style.display = "none";
+    deleteAllButton.style.display = "none";
   }
   await updateFavoritesCount();
-  console.log("Displayed favorites:", favorites);
 };
 
 const sortPokemonByName = (pokemonArray, sortOrder) => {
   return pokemonArray.sort((a, b) => {
     if (sortOrder === "asc") {
-      return a.name.localeCompare(b.name)
+      return a.name.localeCompare(b.name);
     } else if (sortOrder === "desc") {
-      return b.name.localeCompare(a.name)
+      return b.name.localeCompare(a.name);
     }
   });
 };
 
 document.getElementById("sortOrder").addEventListener("change", (event) => {
-pokeFavorites(event.target.value)
-})
+  pokeFavorites(event.target.value);
+});
+
+//chat gpt hjelp
+const deleteAllFavorites = async () => {
+  const userId = localStorage.getItem("id");
+  try {
+    const response = await fetch(`${crudUrl}/pokemons`, {
+      method: "GET",
+      headers: headers,
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const favoritePokemons = await response.json();
+
+    const userFavorites = favoritePokemons.items.filter(
+      (item) => item.userId === userId
+    );
+
+    const deleteRequests = userFavorites.map(async (pokemon) => {
+      const deleteResponse = await fetch(
+        `${crudUrl}/pokemons/${pokemon._uuid}`,
+        {
+          method: "DELETE",
+          headers: headers,
+        }
+      );
+      if (!deleteResponse.ok) {
+        console.error(`Failed to delete pokemon with ID ${pokemon._id}`);
+      }
+    });
+
+    await Promise.all(deleteRequests);
+
+    emptyFavorite();
+    updateFavoritesCount();
+    window.location.reload();
+    console.log("All favorites deleted successfully.");
+  } catch (error) {
+    console.error("Error deleting all favorites:", error);
+  }
+};
+
+document.getElementById("deleteAll").addEventListener("click", () => {
+  deleteAllFavorites();
+});
 
 document.addEventListener("DOMContentLoaded", function () {
   logOutUser();
   pokeFavorites("asc");
-  visibleProfileLink()
+  visibleProfileLink();
 });
