@@ -4,6 +4,7 @@ Velkommen til Pokedex! Denne websiden tillater brukere å utforske pokemon verde
 
 
 ##Funksjoner
+
 ###Brukerregistrering og innlogging
 - **Registrer:** Nye brukere kan opprette en konto via brukernavn og passord.
 - **Logg inn: **Eksisterende brukere kan logge inn med brukernavn og passord for å få tilgang til egen konto og pokemon favorittene sine.
