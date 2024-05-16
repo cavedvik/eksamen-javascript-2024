@@ -18,7 +18,7 @@ export const pokeFetchByType = async (type) => {
     }
     const data = await response.json();
     document.getElementById("pokeApi").innerHTML = "";
-    data.pokemon.forEach((p) => fetchPokemonDetails(p.pokemon.url));
+    data.pokemon.forEach((data) => fetchPokemonDetails(data.pokemon.url));
   } catch (error) {
     console.error(`Problem fetching Pokémon by type at ${url}: `, error);
   }

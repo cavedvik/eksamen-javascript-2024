@@ -149,8 +149,6 @@ export const updateFavoritesCount = async () => {
       favoriteLink.innerText = "Favorites";
     }
 
-    console.log("Favorites count updated to:", favoritesCounter.length);
-    console.log(response);
   } catch (error) {
     console.error("Error updating favorites count", error);
   }

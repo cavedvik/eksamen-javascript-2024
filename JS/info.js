@@ -7,9 +7,9 @@ import {
   visibleProfileLink,
 } from "./helpers.js";
 
-//history pushState
-//---------------henter id fra url i nettleser-----------------------------------
-const urlParams = new URLSearchParams(window.location.search); //les mer om dette
+
+
+const urlParams = new URLSearchParams(window.location.search); //chat gpt hjelp, henter id fra url
 let currentPokemonId = urlParams.get("id") ? parseInt(urlParams.get("id"), 10) : 1 ;
 
 
@@ -47,7 +47,7 @@ const pokemonInfo = (pokemonData) => {
   pokeInfo.setAttribute("id", "pokeInfo");
 
   const pokemonId = document.createElement("p");
-  pokemonId.textContent = `#000${pokemonData.id}`;
+  pokemonId.textContent = `#${pokemonData.id}`;
   pokeInfo.appendChild(pokemonId);
 
   const pokeName = document.createElement("h2");
